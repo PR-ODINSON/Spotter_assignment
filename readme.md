@@ -70,7 +70,6 @@ spotter/
 ├── README.md
 ├── src/                    # Core library
 ├── scripts/                # train_final.py, generate_report.py
-├── artifacts/              # Prediction diagnostics (from train_final.py)
 ├── reports/                # EDA plots + final report PDF
 └── scorer_results/         # candidate_december.png
 ```
