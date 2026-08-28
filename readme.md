@@ -69,10 +69,9 @@ spotter/
 ├── requirements.txt
 ├── README.md
 ├── src/                    # Core library
-├── scripts/                # Runnable pipelines
-├── artifacts/              # Experiment CSV outputs
-├── reports/                # EDA plots + final report
-├── docs/                   # Phase documentation
+├── scripts/                # train_final.py, generate_report.py
+├── artifacts/              # Prediction diagnostics (from train_final.py)
+├── reports/                # EDA plots + final report PDF
 └── scorer_results/         # candidate_december.png
 ```
 
@@ -87,20 +86,10 @@ python -m pip install -r requirements.txt
 ## Running the Pipeline
 
 ```powershell
-# Phase 1 — EDA
-python scripts/run_phase1_eda.py
-
-# Phase 2 — Baselines and validation
-python scripts/run_phase2_validation.py
-
-# Phase 3 — Model optimization
-python scripts/run_phase3.py
-python scripts/run_phase3_verification.py
-
-# Phase 4 — Final training and predictions
+# Final training and predictions
 python scripts/train_final.py
 
-# Phase 5 — Official scoring
+# Official scoring validation
 python score.py --predictions validation_predictions.csv --december-predictions december-chart-inputs.csv
 ```
 
@@ -158,12 +147,12 @@ Exit code **0** — all format checks passed, December chart generated.
 - CatBoost not evaluated (not installed)
 - December chart is flat ($841.48) because feature set Q excludes calendar features
 
-## Reproducibility
+## Report
 
-Full phase documentation: `docs/PHASE_0_PROJECT_AUDIT.md` through `docs/PHASE_5_SCORING.md`
+Written assessment: `reports/freight_rate_ml_assessment.pdf`
 
-Final report: `reports/freight_rate_ml_assessment.docx` (generate with `python scripts/generate_report.py`)
+To regenerate the report from existing EDA plots and submission outputs:
 
-Loom script: `docs/LOOM_SCRIPT.md`
-
-Submission checklist: `docs/GITHUB_CHECKLIST.md`
+```powershell
+python scripts/generate_report.py
+```
