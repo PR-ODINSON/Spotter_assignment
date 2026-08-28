@@ -1,0 +1,41 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+credentials.json
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Cursor (local rules may stay; exclude cache if any)
+.cursor/cache/
+
+# Do NOT ignore submission artifacts:
+# validation_predictions.csv
+# reports/
+# scorer_results/
+# december-chart-inputs.csv
