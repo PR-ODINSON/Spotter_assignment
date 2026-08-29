@@ -198,9 +198,10 @@ DEFAULT_HISTGB_PARAMS = {
     "random_state": RANDOM_SEED,
 }
 
-# Locked final model (Phase 4).
+# Locked final model (Phase 7 adopted: Q + raw target + absolute_error).
 FINAL_MODEL_FEATURE_SET = "Q"
 LOCKED_HISTGB_PARAMS = {
+    "loss": "absolute_error",
     "max_depth": 6,
     "l2_regularization": 0.1,
     "learning_rate": 0.08,

@@ -12,7 +12,6 @@ import pandas as pd
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.pipeline import Pipeline
 
-from src.baselines import Log1pTargetWrapper
 from src.config import (
     ARTIFACTS_DIR,
     DATE_COLUMN,
@@ -46,18 +45,17 @@ def _histgb(**overrides) -> HistGradientBoostingRegressor:
 
 
 def build_final_model() -> Pipeline:
-    """Locked HistGB + log1p + feature set Q."""
-    est = _histgb()
+    """Locked HistGB + raw posted_rate + absolute_error + feature set Q."""
     return Pipeline(
         steps=[
             ("features", build_preprocessing_pipeline(FINAL_MODEL_FEATURE_SET)),
-            ("model", Log1pTargetWrapper(est)),
+            ("model", _histgb()),
         ]
     )
 
 
 def verify_locked_model_definition() -> dict[str, Any]:
-    """Assert implementation matches the Phase 3.5 locked model."""
+    """Assert implementation matches the locked final model."""
     numeric, categorical = get_feature_columns(FINAL_MODEL_FEATURE_SET)
     forbidden = {
         "market_index",
@@ -92,12 +90,18 @@ def verify_locked_model_definition() -> dict[str, Any]:
     if set(categorical) != expected_categorical:
         raise ValueError(f"Q categorical mismatch: got {categorical}")
 
+    if LOCKED_HISTGB_PARAMS.get("loss") != "absolute_error":
+        raise ValueError(
+            f"Locked HistGB loss must be absolute_error, got {LOCKED_HISTGB_PARAMS.get('loss')}"
+        )
+
     return {
         "feature_set": FINAL_MODEL_FEATURE_SET,
         "numeric_features": numeric,
         "categorical_features": categorical,
         "hyperparameters": LOCKED_HISTGB_PARAMS,
-        "target_transform": "log1p -> expm1",
+        "target_transform": "none (raw posted_rate)",
+        "loss": "absolute_error",
     }
 
 
